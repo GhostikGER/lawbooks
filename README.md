@@ -1,61 +1,51 @@
-# MDT-Lawbooks / MDT-Gesetzbücher
+# Lawbooks
 
-## Description / Beschreibung
+## Description
 
-**EN:**  
-MDT-Lawbooks is a simple FiveM resource that displays your “law books” in-game via a responsive HTML/JavaScript/CSS UI. All data is read from two MySQL tables managed by the **myEmergency** asset (by MG-Scripts). Without **myEmergency**, no tables exist, so you’d have to create and populate them yourself.
+Lawbooks is a simple FiveM resource that displays your “law books” in-game via a responsive HTML/JavaScript/CSS UI. All data is read from two MySQL tables managed by the [**myEmergency**](https://shop.myscripts.eu/) asset (by myScripts). Without [**myEmergency**](https://shop.myscripts.eu/), no tables exist, so you’d have to create and populate them yourself.
 
-**DE:**  
-MDT-Lawbooks ist ein FiveM-Resource, das Deine Gesetzbücher im Spiel über eine responsive HTML/JavaScript/CSS-UI anzeigt. Alle Daten werden aus zwei MySQL-Tabellen gelesen, die vom **myEmergency**-Asset (von MG-Scripts) erstellt und befüllt werden. Ohne **myEmergency** existieren die Tabellen nicht – Du müsstest sie dann selbst anlegen und befüllen.
+## Requirements
 
----
+- FiveM server (cerulean)
+- es_extended
+- oxmysql
+- ox_lib
+- [**myEmergency**](https://shop.myscripts.eu/) by myScripts
 
-## Requirements / Voraussetzungen
+## Installation
 
-- FiveM server (cerulean)  
-- es_extended  
-- oxmysql  
-- ox_lib  
-- **myEmergency** by MG-Scripts
-
----
-
-## Installation / Installation
-
-1. Kopiere den Ordner `MDT-Lawbooks` in Dein `resources`-Verzeichnis.  
-2. Füge in `server.cfg` eine Zeile hinzu:  
+1. Copy the `Lawbooks` folder into your `resources` directory.
+2. Add the following line to your `server.cfg`:
    ```
-   ensure MDT-Lawbooks
+   start lawbooks
    ```
-3. Starte oder starte den Server neu.
+3. Start or restart the server.
 
----
+## Configuration
 
-## Configuration / Konfiguration
-
-Alle Einstellungen findest Du in **config.lua**:
+All settings are in **config.lua**:
 
 ```lua
 Config = {}
 
--- Überschrift im UI (oben mittig)
-Config.Header = "Gesetzbuch"
+-- Header in UI (top center)
+Config.Header = "Lawbook"
 
--- Datenbank-Tabellen und Sortier-Einstellungen
+-- Database tables and sorting settings
 Config.Tables = {
   law_books = {
-    name         = "myemergency_law_books",      -- Tablename
-    order        = "id",                         -- Sortier-Spalte
-    sorting_type = "ASC"                         -- ASC oder DESC
+    name         = "myemergency_law_books",      -- Table name
+    order        = "id",                         -- Column to sort by
+    sorting_type = "ASC"                         -- ASC or DESC
   },
   law_book_laws = {
-    name         = "myemergency_law_book_laws",  -- Tablename
-    order        = "paragraph",                  -- Sortier-Spalte
-    sorting_type = "ASC"                         -- ASC oder DESC
+    name         = "myemergency_law_book_laws",  -- Table name
+    order        = "paragraph",                  -- Column to sort by
+    sorting_type = "ASC"                         -- ASC or DESC
   }
 }
 
--- NPC-Standorte und Blip-Settings
+-- NPC locations and blip settings
 Config.Locations = {
   {
     coords   = { x=440.98, y=-978.79, z=30.69, h=179.55 },
@@ -75,45 +65,29 @@ Config.Locations = {
   },
 }
 
--- Titel-Template für jedes Gesetzbuch
+-- Title template for each law book
 Config.LawBookName = "{bookID} – {bookName} ({bookShortName})"
 ```
 
-**DE:**  
-- **Header:** Überschrift im NUI.  
-- **Tables:** Definiert, aus welchen MySQL-Tabellen (`name`) und nach welchen Spalten (`order`) in welcher Reihenfolge (`sorting_type`) die Daten gelesen werden.  
-- **Locations:** Legt NPC-Positionen, Model und Blip-Einstellungen fest.  
-- **LawBookName:** Template für den Accordion-Titel im UI.
+## Usage
 
----
+1. On server start, NPCs spawn at the locations defined in `Config.Locations`.
+2. Approach an NPC and press **E** to open the law book UI.
+3. In the UI, expand each book and search by paragraph, title, content, penalty, or last updated date.
+4. Click the red **X** in the top right to close the UI.
 
-## Usage / Nutzung
+## Database
 
-1. Bei Spielstart spawnen die Peds an den in `Config.Locations` definierten Koordinaten.  
-2. Gehe zum NPC, drücke **E**, um das Gesetzbuch-UI zu öffnen.  
-3. Im UI kannst Du jedes Buch aufklappen, nach Paragraph, Titel, Inhalt, Strafe oder Änderungsdatum durchsuchen.  
-4. Zum Schließen klick auf das rote **X** oben rechts.
+The **myemergency_law_books** and **myemergency_law_book_laws** tables are created and populated by the [**myEmergency**](https://shop.myscripts.eu/) asset.
+- **myemergency_law_books**: columns `id`, `name`, `short_name`, …
+- **myemergency_law_book_laws**: columns `lawbook_id`, `paragraph`, `crime`, `others`, `minimum_penalty`, `detention_time`, `changeddate`, …
 
----
+Without [**myEmergency**](https://shop.myscripts.eu/), you must create and populate these tables yourself.
 
-## Database / Datenbank
+## Future Plans
 
-Die Tabellen **myemergency_law_books** und **myemergency_law_book_laws** werden vom **myEmergency**-Asset angelegt und befüllt.  
-- **myemergency_law_books**: Spalten `id`, `name`, `short_name`, …  
-- **myemergency_law_book_laws**: Spalten `lawbook_id`, `paragraph`, `crime`, `others`, `minimum_penalty`, `detention_time`, `changeddate`, …
-
-Ohne myEmergency musst Du selbst zwei Tabellen mit denselben Spalten anlegen und Daten einfügen.
-
----
-
-## Future Plans / Zukünftige Erweiterungen
-
-- Suche über alle Bücher hinweg  
-- Mehrsprachige UI-Option (aktuell nur DE)  
-- Live-Updates bei Datenbank-Änderungen  
-- Export-/Druckfunktion für offline-Logs
-
----
+- Create law books even without MDT
+- Search across all law books
 
 *Made with ❤ by MG-Scripts*  
-*Erstellt von MG-Scripts*
+Created by MG-Scripts
